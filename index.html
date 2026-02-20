@@ -20,12 +20,31 @@ html,body{width:100%;height:100%;overflow:hidden;background:#111;font-family:Ari
   transform-origin:left center;
   transform-style:preserve-3d;
   transition:transform 1s cubic-bezier(.4,.2,.2,1);
+  overflow:hidden;
 }
+
+/* Fondo difuminado */
+.page .bg{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  filter:blur(40px) brightness(0.7);
+  transform:scale(1.2);
+  z-index:0;
+}
+
+/* Imagen principal */
 .page img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
   backface-visibility:hidden;
+  z-index:1;
 }
 
 .flipped{transform:rotateY(-180deg);}
@@ -202,29 +221,35 @@ html,body{width:100%;height:100%;overflow:hidden;background:#111;font-family:Ari
 
 <!-- PÁGINAS -->
 
-<div class="page" id="page1" style="z-index:10;">
-<img src="https://i.postimg.cc/FFxx18jp/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-170618-0000.png">
+<div class="page" id="page1">
+  <div class="bg" style="background-image:url('imagen1.jpg')"></div>
+  <img src="imagen1.jpg">
 </div>
 
-<div class="page" id="page2" style="z-index:9;">
-<img src="https://i.postimg.cc/rmHM9QWK/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-164203-0000.png">
+<div class="page" id="page1">
+  <div class="bg" style="background-image:url('imagen1.jpg')"></div>
+  <img src="imagen1.jpg">
 </div>
 
-<div class="page" id="page3" style="z-index:8;">
-<img src="https://i.postimg.cc/7ZX621Br/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-171404-0000.png">
+<div class="page" id="page1">
+  <div class="bg" style="background-image:url('imagen1.jpg')"></div>
+  <img src="imagen1.jpg">
 </div>
 
-<div class="page" id="page4" style="z-index:7;">
-<img src="https://i.postimg.cc/Xv08rbDs/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-181429-0000.png">
+<div class="page" id="page1">
+  <div class="bg" style="background-image:url('imagen1.jpg')"></div>
+  <img src="imagen1.jpg">
 </div>
 
-<div class="page" id="page5" style="z-index:6;">
-<img src="https://i.postimg.cc/W356YJbs/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-163238-0000.png">
+<div class="page" id="page1">
+  <div class="bg" style="background-image:url('imagen1.jpg')"></div>
+  <img src="imagen1.jpg">
 </div>
 
-<!-- Página 6 Countdown -->
-<div class="page" id="page6" style="z-index:5;">
-<img src="https://i.postimg.cc/SR5LkFMt/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-160622-0000.png">
+<div class="page" id="page1">
+  <div class="bg" style="background-image:url('imagen1.jpg')"></div>
+  <img src="imagen1.jpg">
+</div>
 
 <div class="countdown">
 <div class="count-box"><div class="number" id="days">00</div><div class="label">DÍAS</div></div>
@@ -234,8 +259,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#111;font-family:Ari
 </div>
 </div>
 
-<div class="page" id="page7" style="z-index:4;">
-<img src="https://i.postimg.cc/htRxr0bs/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-160845-0000.png">
+<div class="page" id="page1">
+  <div class="bg" style="background-image:url('imagen1.jpg')"></div>
+  <img src="imagen1.jpg">
 </div>
 
 <!-- Página 8 Ubicación -->
@@ -277,22 +303,33 @@ html,body{width:100%;height:100%;overflow:hidden;background:#111;font-family:Ari
 
 <audio id="bgMusic" src="musica.mp3" loop></audio>
 <audio id="magicSound" src="magico.mp3"></audio>
+<audio id="windSound" src="viento.mp3" loop></audio>
 
 <script>
 let currentPage=1;
 const totalPages=10;
+
 const bgMusic=document.getElementById("bgMusic");
 const magicSound=document.getElementById("magicSound");
+const windSound=document.getElementById("windSound");
 
+/* INICIO */
 document.getElementById("startScreen").addEventListener("click",()=>{
 document.getElementById("startScreen").style.display="none";
+
 bgMusic.volume=0.5;
+windSound.volume=0.4;
+
 bgMusic.play();
+windSound.play();
 });
 
+/* SONIDO MAGICO SOLO EN 1,3,5,7,9 */
 function playMagic(){
+if([1,3,5,7,9].includes(currentPage)){
 magicSound.currentTime=0;
 magicSound.play();
+}
 }
 
 function nextPage(){
@@ -302,7 +339,7 @@ playMagic();
 currentPage++;
 
 if(currentPage === totalPages){
-  startStorm(); // activa tormenta en última página
+  startStorm();
 }
 }
 }
@@ -310,7 +347,7 @@ if(currentPage === totalPages){
 function prevPage(){
 if(currentPage>1){
 if(currentPage === totalPages){
-  stopStorm(); // quita tormenta si regresas
+  stopStorm();
 }
 
 currentPage--;
@@ -319,6 +356,7 @@ playMagic();
 }
 }
 
+/* GESTOS */
 let startX=0;
 document.addEventListener("touchstart",e=>{startX=e.touches[0].clientX;});
 document.addEventListener("touchend",e=>{
@@ -327,7 +365,7 @@ if(startX-endX>60)nextPage();
 if(endX-startX>60)prevPage();
 });
 
-// COUNTDOWN 29 MARZO 2026
+/* COUNTDOWN 29 MARZO 2026 */
 const targetDate=new Date("March 29, 2026 16:00:00").getTime();
 function updateCountdown(){
 const now=new Date().getTime();
@@ -340,6 +378,7 @@ document.getElementById("seconds").innerHTML=Math.floor((diff%(1000*60))/1000);
 }
 setInterval(updateCountdown,1000);
 updateCountdown();
+
 /* ===== GENERADOR DE COPOS ===== */
 const snowContainer = document.getElementById("snow");
 
@@ -367,14 +406,13 @@ let snowInterval = setInterval(createSnowflake, 150);
 
 function startStorm(){
   clearInterval(snowInterval);
-  snowInterval = setInterval(createSnowflake, 40); // más copos
+  snowInterval = setInterval(createSnowflake, 40);
 }
 
 function stopStorm(){
   clearInterval(snowInterval);
-  snowInterval = setInterval(createSnowflake, 150); // normal
+  snowInterval = setInterval(createSnowflake, 150);
 }
 </script>
-
 </body>
 </html>
