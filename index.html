@@ -1,227 +1,325 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Libro 3D Premium</title>
+<title>Libro Invitación</title><style>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;overflow:hidden;background:#111;font-family:Arial,sans-serif;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-.scene{position:fixed;inset:0;width:100vw;height:100vh;perspective:5000px;overflow:hidden;}
-.book{position:absolute;inset:0;width:100%;height:100%;transform-style:preserve-3d;}
-.spine{position:absolute;left:0;width:20px;height:100%;background:linear-gradient(to right,#000,#444,#000);z-index:1000;}
+html,body{
+width:100%;
+height:100%;
+background:#000;
+font-family:Arial;
+overflow:hidden;
+touch-action:pan-y;
+}
+
+/* ESCENA */
+
+.scene{
+position:fixed;
+inset:0;
+width:100vw;
+height:100vh;
+perspective:4000px;
+background:#000;
+}
+
+.book{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+transform-style:preserve-3d;
+}
+
+/* PÁGINAS */
 
 .page{
-  position:absolute;
-  inset:0;
-  transform-origin:left center;
-  transform-style:preserve-3d;
-  transition:transform 1s cubic-bezier(.4,.2,.2,1);
+position:absolute;
+inset:0;
+transform-origin:left center;
+transition:transform 1s cubic-bezier(.4,.2,.2,1);
 }
+
 .page img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  backface-visibility:hidden;
+width:100%;
+height:100%;
+object-fit:cover;
 }
-.flipped{transform:rotateY(-180deg);}
+
+.flipped{
+transform:rotateY(-180deg);
+}
+
+/* START SCREEN */
+
+#startScreen{
+
+position:fixed;
+inset:0;
+background:#000;
+z-index:9999;
+display:flex;
+justify-content:center;
+align-items:center;
+
+}
+
+#startScreen img{
+
+width:100%;
+height:100%;
+object-fit:cover;
+
+}
+
+/* BOTONES */
+
+.locationBtn{
+
+position:absolute;
+top:30%;
+left:50%;
+transform:translateX(-50%);
+
+}
+
+.locationBtn img{
+
+width:280px;
+animation:latido 2s infinite;
+
+}
+
+.confirmBtn{
+
+position:absolute;
+bottom:28%;
+left:50%;
+transform:translateX(-50%);
+
+}
+
+.confirmBtn img{
+
+width:420px;
+animation:latido 2s infinite;
+
+}
+
+@keyframes latido{
+
+0%{transform:scale(1);}
+50%{transform:scale(1.08);}
+100%{transform:scale(1);}
+
+}
+
+/* COUNTDOWN */
 
 .countdown{
-  position:absolute;
-  bottom:12%;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  gap:15px;
+
+position:absolute;
+bottom:12%;
+width:100%;
+display:flex;
+justify-content:center;
+gap:10px;
+
 }
 
 .count-box{
-  background:rgba(0,20,40,0.6);
-  border:2px solid #7fe8ff;
-  border-radius:15px;
-  padding:15px 18px;
-  text-align:center;
-  backdrop-filter:blur(6px);
-  box-shadow:0 0 10px #7fe8ff,0 0 20px #3ddfff,0 0 40px #00d4ff;
-  min-width:70px;
+
+background:rgba(0,0,0,.5);
+padding:10px;
+border-radius:10px;
+color:white;
+font-size:20px;
+min-width:60px;
+text-align:center;
+
 }
 
-.number{font-size:28px;color:#9befff;}
-.label{font-size:12px;margin-top:5px;color:#ddd;}
+/* NIEVE */
 
-#startScreen{
-  position:fixed;
-  inset:0;
-  background:#111;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:5000;
-}
-#startScreen img{width:100vw;height:100vh;object-fit:cover;}
+.snow{
 
-.locationBtn,.confirmBtn{position:absolute;left:50%;transform:translateX(-50%);}
-.locationBtn{top:30%;}
-.confirmBtn{bottom:30%;}
+position:fixed;
+inset:0;
+pointer-events:none;
 
-.locationBtn img{width:300px;}
-.confirmBtn img{width:500px;}
-
-@keyframes latidoSuave{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.08);}
-  100%{transform:scale(1);}
-}
-.locationBtn img,.confirmBtn img{
-  animation:latidoSuave 2s infinite ease-in-out;
-  cursor:pointer;
 }
 
-.snow-container{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:2000;
-}
 .snowflake{
-  position:absolute;
-  top:-10px;
-  width:8px;
-  height:8px;
-  background:white;
-  border-radius:50%;
-  opacity:0.8;
-  filter:blur(1px);
-  animation:fall linear forwards;
+
+position:absolute;
+width:6px;
+height:6px;
+background:white;
+border-radius:50%;
+animation:fall linear forwards;
+
 }
+
 @keyframes fall{
-  0%{transform:translateY(0);opacity:0;}
-  10%{opacity:1;}
-  100%{transform:translateY(110vh);opacity:0;}
+
+to{
+transform:translateY(110vh);
+opacity:0;
 }
-</style>
-</head>
 
-<body>
+}
 
-<div class="snow-container" id="snow"></div>
-
-<div id="startScreen">
-  <img src="img/portada.png">
-</div>
-
-<div class="scene">
-<div class="book">
-<div class="spine"></div>
-
-<div class="page" id="page1" style="z-index:10;"><img src="img/pagina1.png"></div>
-<div class="page" id="page2" style="z-index:9;"><img src="img/pagina2.png"></div>
-<div class="page" id="page3" style="z-index:8;"><img src="img/pagina3.png"></div>
-<div class="page" id="page4" style="z-index:7;"><img src="img/pagina4.png"></div>
-<div class="page" id="page5" style="z-index:6;"><img src="img/pagina5.png"></div>
-
-<div class="page" id="page6" style="z-index:5;">
-<img src="img/pagina6.png">
-<div class="countdown">
-<div class="count-box"><div class="number" id="days">00</div><div class="label">DÍAS</div></div>
-<div class="count-box"><div class="number" id="hours">00</div><div class="label">HORAS</div></div>
-<div class="count-box"><div class="number" id="minutes">00</div><div class="label">MIN</div></div>
-<div class="count-box"><div class="number" id="seconds">00</div><div class="label">SEG</div></div>
-</div>
-</div>
-
-<div class="page" id="page7" style="z-index:4;"><img src="img/pagina7.png"></div>
-
-<div class="page" id="page8" style="z-index:3;">
-<img src="img/pagina8.png">
-<a class="locationBtn" href="https://www.google.com/maps?q=salon+mágico" target="_blank">
-<img src="img/btn-ubicacion.png">
-</a>
-</div>
-
-<div class="page" id="page9" style="z-index:2;">
-<img src="img/pagina9.png">
-<a class="confirmBtn" href="https://wa.me/521XXXXXXXXXX" target="_blank">
-<img src="img/btn-confirmar.png">
-</a>
-</div>
-
-<div class="page" id="page10" style="z-index:1;"><img src="img/pagina10.png"></div>
-
-</div>
-</div>
-
-<audio id="bgMusic" src="musica.mp3" loop></audio>
-<audio id="windSound" src="viento.mp3" loop></audio>
-<audio id="magicSound" src="magico.mp3"></audio>
+</style></head><body><div id="startScreen"><img src="img/portada.png"></div><div class="scene"><div class="book"><div class="page" id="page1" style="z-index:10;">
+<img src="img/pagina1.png">
+</div><div class="page" id="page2" style="z-index:9;">
+<img src="img/pagina2.png">
+</div><div class="page" id="page3" style="z-index:8;">
+<img src="img/pagina3.png">
+</div><div class="page" id="page4" style="z-index:7;">
+<img src="img/pagina4.png">
+</div><div class="page" id="page5" style="z-index:6;">
+<img src="img/pagina5.png">
+</div><div class="page" id="page6" style="z-index:5;"><img src="img/pagina6.png"><div class="countdown"><div class="count-box">
+<div id="days">00</div>
+Días
+</div><div class="count-box">
+<div id="hours">00</div>
+Horas
+</div><div class="count-box">
+<div id="minutes">00</div>
+Min
+</div><div class="count-box">
+<div id="seconds">00</div>
+Seg
+</div></div></div><div class="page" id="page7" style="z-index:4;">
+<img src="img/pagina7.png">
+</div><div class="page" id="page8" style="z-index:3;"><img src="img/pagina8.png"><a href="https://google.com/maps" class="locationBtn" target="_blank"><img src="img/btn-ubicacion.png"></a></div><div class="page" id="page9" style="z-index:2;"><img src="img/pagina9.png"><a href="https://wa.me/521XXXXXXXXXX" class="confirmBtn" target="_blank"><img src="img/btn-confirmar.png"></a></div><div class="page" id="page10" style="z-index:1;">
+<img src="img/pagina10.png">
+</div></div></div><audio id="musica" src="musica.mp3" loop></audio>
+<audio id="magico" src="magico.mp3"></audio>
 
 <script>
-let currentPage=1,totalPages=10;
-const bgMusic=bgMusic=document.getElementById("bgMusic");
-const windSound=document.getElementById("windSound");
-const magicSound=document.getElementById("magicSound");
 
-document.getElementById("startScreen").onclick=()=>{
-  startScreen.style.display="none";
-  bgMusic.volume=0.5;
-  windSound.volume=0.4;
-  bgMusic.play();
-  windSound.play();
-  playMagic();
-};
 
-function playMagic(){
-  if([1,3,5,7,9].includes(currentPage)){
-    magicSound.currentTime=0;
-    magicSound.play();
-  }
+let page=1;
+let total=10;
+
+
+let musica=document.getElementById("musica");
+let magico=document.getElementById("magico");
+
+
+startScreen.onclick=()=>{
+
+startScreen.style.display="none";
+
+musica.play();
+
 }
 
-function nextPage(){
-  if(currentPage<totalPages){
-    document.getElementById("page"+currentPage).classList.add("flipped");
-    currentPage++;
-    playMagic();
-  }
+
+
+function next(){
+
+if(page<total){
+
+document.getElementById("page"+page).classList.add("flipped");
+
+magico.play();
+
+page++;
+
 }
-function prevPage(){
-  if(currentPage>1){
-    currentPage--;
-    document.getElementById("page"+currentPage).classList.remove("flipped");
-    playMagic();
-  }
+
 }
+
+
+
+function prev(){
+
+if(page>1){
+
+page--;
+
+document.getElementById("page"+page).classList.remove("flipped");
+
+magico.play();
+
+}
+
+}
+
+
 
 let startX=0;
-document.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
-document.addEventListener("touchend",e=>{
-let endX=e.changedTouches[0].clientX;
-if(startX-endX>60)nextPage();
-if(endX-startX>60)prevPage();
+
+
+document.addEventListener("touchstart",e=>{
+
+startX=e.touches[0].clientX;
+
 });
 
-const targetDate=new Date("March 29, 2026 16:00:00").getTime();
+
+document.addEventListener("touchend",e=>{
+
+let endX=e.changedTouches[0].clientX;
+
+if(startX-endX>50)next();
+
+if(endX-startX>50)prev();
+
+});
+
+
+/* COUNTDOWN */
+
+let target=new Date("March 29, 2026 16:00:00").getTime();
+
+
 setInterval(()=>{
-const diff=targetDate-new Date().getTime();
-if(diff<=0)return;
+
+let now=new Date().getTime();
+
+let diff=target-now;
+
 days.innerHTML=Math.floor(diff/86400000);
-hours.innerHTML=Math.floor(diff%86400000/3600000);
-minutes.innerHTML=Math.floor(diff%3600000/60000);
-seconds.innerHTML=Math.floor(diff%60000/1000);
+
+hours.innerHTML=Math.floor(diff/3600000)%24;
+
+minutes.innerHTML=Math.floor(diff/60000)%60;
+
+seconds.innerHTML=Math.floor(diff/1000)%60;
+
 },1000);
 
-const snow=document.getElementById("snow");
-setInterval(()=>{
-const s=document.createElement("div");
-s.className="snowflake";
-s.style.left=Math.random()*100+"vw";
-s.style.animationDuration=(Math.random()*5+5)+"s";
-snow.appendChild(s);
-setTimeout(()=>s.remove(),10000);
-},150);
-</script>
 
-</body>
+
+/* NIEVE */
+
+setInterval(()=>{
+
+let snow=document.createElement("div");
+
+snow.className="snowflake";
+
+snow.style.left=Math.random()*100+"vw";
+
+snow.style.animationDuration=5+Math.random()*5+"s";
+
+document.body.appendChild(snow);
+
+setTimeout(()=>snow.remove(),10000);
+
+},200);
+
+
+</script></body>
 </html>
