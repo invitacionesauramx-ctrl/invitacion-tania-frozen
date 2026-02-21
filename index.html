@@ -1,386 +1,511 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Libro 3D Premium</title>
+<title>Invitación Frozen Premium</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;overflow:hidden;background:#111;font-family:Arial,sans-serif;}
 
-.scene{position:fixed;inset:0;width:100vw;height:100vh;perspective:5000px;overflow:hidden;}
-.book{position:absolute;inset:0;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.3s ease;}
-.spine{position:absolute;left:0;width:20px;height:100%;background:linear-gradient(to right,#000,#444,#000);z-index:1000;}
-
-.page{
-  position:absolute;
-  inset:0;
-  transform-origin:left center;
-  transform-style:preserve-3d;
-  transition:transform 1s cubic-bezier(.4,.2,.2,1);
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
-.page img{
 
+html,body{
 width:100%;
 height:100%;
+overflow:hidden;
+background:#111;
+font-family:Arial,sans-serif;
+}
 
-object-fit:cover;   /* llena todo sin negro */
+/* ESCENA */
 
+.scene{
+position:fixed;
+inset:0;
+width:100vw;
+height:100vh;
+perspective:5000px;
+overflow:hidden;
+}
+
+.book{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+transform-style:preserve-3d;
+}
+
+.spine{
+position:absolute;
+left:0;
+width:20px;
+height:100%;
+background:linear-gradient(to right,#000,#444,#000);
+z-index:1000;
+}
+
+/* PAGINAS */
+
+.page{
+position:absolute;
+inset:0;
+transform-origin:left center;
+transform-style:preserve-3d;
+transition:transform 1s cubic-bezier(.4,.2,.2,1);
+}
+
+.page img{
+width:100%;
+height:100%;
+object-fit:cover;
 backface-visibility:hidden;
-
-display:block;
-
 }
 
-.flipped{transform:rotateY(-180deg);}
+/* VOLTEO */
 
-.countdown{
-  position:absolute;
-  bottom:12%;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  gap:15px;
+.flipped{
+transform:rotateY(-180deg);
 }
 
-.count-box{
-  background:rgba(0,20,40,0.6);
-  border:2px solid #7fe8ff;
-  border-radius:15px;
-  padding:15px 18px;
-  text-align:center;
-  backdrop-filter:blur(6px);
-  box-shadow:
-    0 0 10px #7fe8ff,
-    0 0 20px #3ddfff,
-    0 0 40px #00d4ff;
-  min-width:70px;
-}
+/* PANTALLA INICIO */
 
-.number{
-  font-size:28px;
-  color:#9befff;
-  text-shadow:
-    0 0 5px #9befff,
-    0 0 15px #3ddfff,
-    0 0 30px #00d4ff;
-}
-
-.label{
-  font-size:12px;
-  margin-top:5px;
-  letter-spacing:1px;
-  color:#ddd;
-}
-
-/* Pantalla inicio */
 #startScreen{
-  position:fixed;
-  inset:0;
-  background:#111;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:5000;
-  cursor:pointer;
+position:fixed;
+inset:0;
+z-index:5000;
+cursor:pointer;
 }
 
 #startScreen img{
-  width:100vw;
-  height:100vh;
-  object-fit:cover;
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
-/* Botones */
-.page a img{
-  width:140px;
-  cursor:pointer;
-  transition:transform 0.2s;
-}
-.page a img:hover{transform:scale(1.05);}
-/* ===== CONTROL TOTAL BOTÓN UBICACIÓN ===== */
+/* BOTON UBICACION */
+
 .locationBtn{
-  position:absolute;
-  top:30%;       /* subir o bajar */
-  left:50%;      /* mover izquierda/derecha */
-  transform:translateX(-50%);
+
+position:absolute;
+
+top:30%;
+
+left:50%;
+
+transform:translateX(-50%);
+
 }
 
 .locationBtn img{
-  width:300px;   /* tamaño */
-  cursor:pointer;
-  transition:0.3s;
+
+width:300px;
+
+animation:latido 2s infinite;
+
 }
 
-.locationBtn img:hover{
-  transform:scale(1.08);
-}
+/* BOTON CONFIRMAR */
 
-
-/* ===== CONTROL TOTAL BOTÓN CONFIRMAR ===== */
 .confirmBtn{
-  position:absolute;
-  bottom:30%;    /* subir o bajar */
-  left:50%;
-  transform:translateX(-48%);
+
+position:absolute;
+
+bottom:30%;
+
+left:50%;
+
+transform:translateX(-50%);
+
 }
 
 .confirmBtn img{
-  width:500px;   /* tamaño */
-  cursor:pointer;
-  transition:0.3s;
+
+width:500px;
+
+animation:latido 2s infinite;
+
 }
 
-.confirmBtn img:hover{
-  transform:scale(1.08);
-}
-/* ===== EFECTO LATIDO SUAVE ===== */
-@keyframes latidoSuave {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.08); }
-  100% { transform: scale(1); }
+/* LATIDO */
+
+@keyframes latido{
+
+0%{transform:scale(1)}
+
+50%{transform:scale(1.08)}
+
+100%{transform:scale(1)}
+
 }
 
-/* Ubicación */
-.locationBtn img{
-  animation: latidoSuave 2s infinite ease-in-out;
+/* COUNTDOWN */
+
+.countdown{
+
+position:absolute;
+
+bottom:12%;
+
+width:100%;
+
+display:flex;
+
+justify-content:center;
+
+gap:15px;
+
 }
 
-/* Confirmar */
-.confirmBtn img{
-  animation: latidoSuave 2s infinite ease-in-out;
+.count-box{
+
+background:rgba(0,20,40,0.6);
+
+border:2px solid #7fe8ff;
+
+border-radius:15px;
+
+padding:15px;
+
+text-align:center;
+
+min-width:70px;
+
 }
 
-/* Al pasar el dedo */
-.locationBtn img:hover,
-.confirmBtn img:hover{
-  animation: none;
-  transform: scale(1.12);
+.number{
+
+font-size:28px;
+
+color:#9befff;
+
 }
-/* ===== EFECTO NIEVE GLOBAL ===== */
+
+.label{
+
+font-size:12px;
+
+color:white;
+
+}
+
+/* NIEVE */
+
 .snow-container{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  overflow:hidden;
-  z-index:2000;
+
+position:fixed;
+
+inset:0;
+
+pointer-events:none;
+
+z-index:2000;
+
 }
 
 .snowflake{
-  position:absolute;
-  top:-10px;
-  width:8px;
-  height:8px;
-  background:white;
-  border-radius:50%;
-  opacity:0.8;
-  filter:blur(1px);
-  animation: fall linear forwards;
+
+position:absolute;
+
+width:8px;
+
+height:8px;
+
+background:white;
+
+border-radius:50%;
+
+animation:fall linear forwards;
+
 }
 
 @keyframes fall{
-  0%{
-    transform:translateY(0) translateX(0);
-    opacity:0;
-  }
-  10%{opacity:1;}
-  100%{
-    transform:translateY(110vh) translateX(60px);
-    opacity:0;
-  }
+
+to{
+
+transform:translateY(110vh);
+
+opacity:0;
+
 }
+
+}
+
 </style>
 </head>
+
 <body>
 
 <div class="snow-container" id="snow"></div>
-<!-- Pantalla Inicio -->
+
+<!-- INICIO -->
+
 <div id="startScreen">
-  <img id="startButton"
-  src="https://i.postimg.cc/P5V3J9kx/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-164700-0000.png">
+
+<img src="img/portada.png">
+
 </div>
 
 <div class="scene">
+
 <div class="book">
+
 <div class="spine"></div>
 
-<!-- PÁGINAS -->
+<!-- PAGINAS -->
 
-<div class="page" id="page1" style="z-index:10;">
-<img src="https://i.postimg.cc/FFxx18jp/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-170618-0000.png">
+<div class="page" id="page1" style="z-index:10">
+
+<img src="img/pagina1.png">
+
 </div>
 
-<div class="page" id="page2" style="z-index:9;">
-<img src="https://i.postimg.cc/rmHM9QWK/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-164203-0000.png">
+<div class="page" id="page2" style="z-index:9">
+
+<img src="img/pagina2.png">
+
 </div>
 
-<div class="page" id="page3" style="z-index:8;">
-<img src="https://i.postimg.cc/7ZX621Br/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-171404-0000.png">
+<div class="page" id="page3" style="z-index:8">
+
+<img src="img/pagina3.png">
+
 </div>
 
-<div class="page" id="page4" style="z-index:7;">
-<img src="https://i.postimg.cc/Xv08rbDs/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-181429-0000.png">
+<div class="page" id="page4" style="z-index:7">
+
+<img src="img/pagina4.png">
+
 </div>
 
-<div class="page" id="page5" style="z-index:6;">
-<img src="https://i.postimg.cc/W356YJbs/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-163238-0000.png">
+<div class="page" id="page5" style="z-index:6">
+
+<img src="img/pagina5.png">
+
 </div>
 
-<!-- Página 6 Countdown -->
-<div class="page" id="page6" style="z-index:5;">
-<img src="https://i.postimg.cc/SR5LkFMt/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-160622-0000.png">
+<!-- COUNTDOWN -->
+
+<div class="page" id="page6" style="z-index:5">
+
+<img src="img/pagina6.png">
 
 <div class="countdown">
-<div class="count-box"><div class="number" id="days">00</div><div class="label">DÍAS</div></div>
-<div class="count-box"><div class="number" id="hours">00</div><div class="label">HORAS</div></div>
-<div class="count-box"><div class="number" id="minutes">00</div><div class="label">MIN</div></div>
-<div class="count-box"><div class="number" id="seconds">00</div><div class="label">SEG</div></div>
-</div>
-</div>
 
-<div class="page" id="page7" style="z-index:4;">
-<img src="https://i.postimg.cc/htRxr0bs/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-160845-0000.png">
-</div>
+<div class="count-box">
 
-<!-- Página 8 Ubicación -->
-<div class="page" id="page8" style="z-index:3;">
-  
-  <img src="https://i.postimg.cc/L4qNQNff/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-161258-0000.png">
+<div id="days" class="number">0</div>
 
-  <a href="https://www.google.com/maps?q=salon+mágico"
-     class="locationBtn"
-     target="_blank">
-     
-     <img src="https://i.postimg.cc/vT2Ryzb6/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-191236-0000.png" alt="Ubicación">
-     
-  </a>
+<div class="label">DÍAS</div>
 
 </div>
 
-<!-- Página 9 Confirmar -->
-<div class="page" id="page9" style="z-index:2;">
-  
-  <img src="https://i.postimg.cc/9XqYYz58/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-162040-0000.png">
+<div class="count-box">
 
-  <a href="https://wa.me/521XXXXXXXXXX?text=Confirmo%20mi%20asistencia"
-     class="confirmBtn"
-     target="_blank">
-     
-     <img src="https://i.postimg.cc/KcqCR0hb/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-191019-0000.png" alt="Confirmar">
-     
-  </a>
+<div id="hours" class="number">0</div>
+
+<div class="label">HORAS</div>
 
 </div>
 
-<div class="page" id="page10" style="z-index:1;">
-<img src="https://i.postimg.cc/CKrL5Fcb/Hola-Soy-Marlen-y-estoy-muy-feliz-porque-cumplo-3-anitos-Quiero-que-ven-20260219-184216-0000.png">
+<div class="count-box">
+
+<div id="minutes" class="number">0</div>
+
+<div class="label">MIN</div>
+
+</div>
+
+<div class="count-box">
+
+<div id="seconds" class="number">0</div>
+
+<div class="label">SEG</div>
+
 </div>
 
 </div>
+
 </div>
+
+<div class="page" id="page7" style="z-index:4">
+
+<img src="img/pagina7.png">
+
+</div>
+
+<div class="page" id="page8" style="z-index:3">
+
+<img src="img/pagina8.png">
+
+<a href="https://www.google.com/maps?q=salon+mágico"
+
+class="locationBtn"
+
+target="_blank">
+
+<img src="img/btn-ubicacion.png">
+
+</a>
+
+</div>
+
+<div class="page" id="page9" style="z-index:2">
+
+<img src="img/pagina9.png">
+
+<a href="https://wa.me/521XXXXXXXXXX"
+
+class="confirmBtn"
+
+target="_blank">
+
+<img src="img/btn-confirmar.png">
+
+</a>
+
+</div>
+
+<div class="page" id="page10" style="z-index:1">
+
+<img src="img/pagina10.png">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- AUDIO -->
 
 <audio id="bgMusic" src="musica.mp3" loop></audio>
+
 <audio id="magicSound" src="magico.mp3"></audio>
 
 <script>
-let currentPage=1;
-const totalPages=10;
-const bgMusic=document.getElementById("bgMusic");
-const magicSound=document.getElementById("magicSound");
 
-document.getElementById("startScreen").addEventListener("click",()=>{
-document.getElementById("startScreen").style.display="none";
-bgMusic.volume=0.5;
-bgMusic.play();
-});
+/* VARIABLES */
 
-function playMagic(){
-magicSound.currentTime=0;
-magicSound.play();
+let currentPage=1
+
+const totalPages=10
+
+const bgMusic=document.getElementById("bgMusic")
+
+const magicSound=document.getElementById("magicSound")
+
+/* INICIO */
+
+document.getElementById("startScreen").onclick=()=>{
+
+document.getElementById("startScreen").style.display="none"
+
+bgMusic.play()
+
 }
 
-function nextPage(){
+/* SONIDO */
+
+function sonido(){
+
+magicSound.currentTime=0
+
+magicSound.play()
+
+}
+
+/* PAGINAS */
+
+function next(){
+
 if(currentPage<totalPages){
-document.getElementById("page"+currentPage).classList.add("flipped");
-playMagic();
-currentPage++;
 
-if(currentPage === totalPages){
-  startStorm(); // activa tormenta en última página
-}
-}
+document.getElementById("page"+currentPage).classList.add("flipped")
+
+sonido()
+
+currentPage++
+
 }
 
-function prevPage(){
+}
+
+function prev(){
+
 if(currentPage>1){
-if(currentPage === totalPages){
-  stopStorm(); // quita tormenta si regresas
+
+currentPage--
+
+document.getElementById("page"+currentPage).classList.remove("flipped")
+
+sonido()
+
 }
 
-currentPage--;
-document.getElementById("page"+currentPage).classList.remove("flipped");
-playMagic();
-}
 }
 
-let startX=0;
-document.addEventListener("touchstart",e=>{startX=e.touches[0].clientX;});
+/* TOUCH */
+
+let startX=0
+
+document.addEventListener("touchstart",e=>startX=e.touches[0].clientX)
+
 document.addEventListener("touchend",e=>{
-let endX=e.changedTouches[0].clientX;
-if(startX-endX>60)nextPage();
-if(endX-startX>60)prevPage();
-});
 
-// COUNTDOWN 29 MARZO 2026
-const targetDate=new Date("March 29, 2026 16:00:00").getTime();
-function updateCountdown(){
-const now=new Date().getTime();
-const diff=targetDate-now;
-if(diff<=0)return;
-document.getElementById("days").innerHTML=Math.floor(diff/(1000*60*60*24));
-document.getElementById("hours").innerHTML=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-document.getElementById("minutes").innerHTML=Math.floor((diff%(1000*60*60))/(1000*60));
-document.getElementById("seconds").innerHTML=Math.floor((diff%(1000*60))/1000);
-}
-setInterval(updateCountdown,1000);
-updateCountdown();
-/* ===== GENERADOR DE COPOS ===== */
-const snowContainer = document.getElementById("snow");
+let endX=e.changedTouches[0].clientX
 
-function createSnowflake(){
-  const snowflake = document.createElement("div");
-  snowflake.classList.add("snowflake");
+if(startX-endX>50)next()
 
-  const size = Math.random()*6+4;
-  snowflake.style.width = size+"px";
-  snowflake.style.height = size+"px";
+if(endX-startX>50)prev()
 
-  snowflake.style.left = Math.random()*100+"vw";
+})
 
-  const duration = Math.random()*5+5;
-  snowflake.style.animationDuration = duration+"s";
+/* COUNTDOWN */
 
-  snowContainer.appendChild(snowflake);
+const target=new Date("March 29, 2026 16:00").getTime()
 
-  setTimeout(()=>{
-    snowflake.remove();
-  }, duration*1000);
-}
+setInterval(()=>{
 
-let snowInterval = setInterval(createSnowflake, 150);
+const now=new Date().getTime()
 
-function startStorm(){
-  clearInterval(snowInterval);
-  snowInterval = setInterval(createSnowflake, 40); // más copos
-}
+const diff=target-now
 
-function stopStorm(){
-  clearInterval(snowInterval);
-  snowInterval = setInterval(createSnowflake, 150); // normal
-}
+document.getElementById("days").innerHTML=Math.floor(diff/86400000)
+
+document.getElementById("hours").innerHTML=Math.floor(diff/3600000)%24
+
+document.getElementById("minutes").innerHTML=Math.floor(diff/60000)%60
+
+document.getElementById("seconds").innerHTML=Math.floor(diff/1000)%60
+
+},1000)
+
+/* NIEVE */
+
+const snow=document.getElementById("snow")
+
+setInterval(()=>{
+
+let s=document.createElement("div")
+
+s.className="snowflake"
+
+s.style.left=Math.random()*100+"vw"
+
+s.style.animationDuration=Math.random()*5+5+"s"
+
+snow.appendChild(s)
+
+setTimeout(()=>s.remove(),10000)
+
+},120)
+
 </script>
 
 </body>
+
 </html>
